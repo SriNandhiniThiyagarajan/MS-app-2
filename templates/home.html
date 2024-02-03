@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        .navbar-custom {
+            background-color: #3898c1; 
+            color: white;
+        }
+        .footer-custom {
+            background-color: #3898c1; 
+            color: white;
+            padding: 10px 0;
+        }
+        .footer-custom p {
+            margin: 0;
+        }
+        .content-wrap {
+            min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
+        }
+        .flex-grow-1 {
+            flex-grow: 1; 
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="content-wrap">
+        <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                  <!-- Conditional rendering based on user's authentication and role -->
+                  {% if current_user.is_authenticated %}
+                    {% for role in current_user.roles %}
+                      <!-- Admin Links -->
+                      {% if role.name == "admin" %}
+                        <li class="nav-item">
+                          <router-link to="/admin" class="nav-link">Admin Dashboard</router-link>
+                        </li>
+                        <li class="nav-item">
+                          <router-link to="manage-users" class="nav-link">User & Song</router-link>
+                        </li>
+                      <!-- Creator Links -->
+                      {% elif role.name == "creator" %}
+                        <li class="nav-item">
+                          <router-link to="/dashboard" class="nav-link">User Dashboard</router-link>
+                        </li>
+                        <li class="nav-item">
+                          <router-link to="/albums" class="nav-link">Albums</router-link>
+                        </li>
+                        <li class="nav-item">
+                          <router-link to="/creator" class="nav-link">Creator Dashboard</router-link>
+                        </li>
+                        <li class="nav-item">
+                          <router-link to="/playlist" class="nav-link">Playlist</router-link>
+                        </li>
+                      <!-- User Links -->
+                      {% elif role.name == "user" %}
+                        <li class="nav-item">
+                          <router-link to="/playlist" class="nav-link">Playlist</router-link>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                    <!-- Common Links -->
+                    <li class="nav-item">
+                      <router-link to="/profile" class="nav-link">Profile</router-link>
+                    </li>
+                    <li class="nav-item">
+                      <router-link to="/logout" class="nav-link">Logout</router-link>
+                    </li>
+                  {% endif %}
+                </ul>
+            </div>
+        </nav>
+    
+        <main class="container flex-grow-1">
+            <router-view></router-view>
+        </main>
+
+        <footer class="footer footer-custom">
+            <div class="container text-center">
+                <p>&copy; Thanks for using our application. Have a great leisure time!</p>
+                <br>please feel free to write us: srinandhini82@gmail.com for any support or issue.
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Vue.js, Vue Router, Vuex, and Bootstrap scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+    <script src="https://unpkg.com/vuex@2.0.0/dist/vuex.js"></script>
+    <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
